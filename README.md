@@ -6,6 +6,7 @@ Create the perfect palette by customize your color schemes. A React Native App b
 
 ![](demo.gif)
 
-## Live
+## Download Expo and scan the QR Code
 
-Download Expo and scan the QR Code or test it out in the Web. [LINK](https://snack.expo.io/@ad757/color-scheme-app)
+Test it out in Expo in the Web browser! 
+[LINK](https://snack.expo.io/@ad757/color-scheme-app)
