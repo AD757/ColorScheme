@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  StyleSheet,
-  FlatList,
   TouchableOpacity,
   Text,
   View,
+  StyleSheet,
+  FlatList,
 } from 'react-native';
 
 const PalettePreview = ({ palette, onPress }) => {
@@ -14,7 +14,7 @@ const PalettePreview = ({ palette, onPress }) => {
       <FlatList
         style={styles.list}
         data={palette.colors.slice(0, 5)}
-        keyExtractor={item => item.colorName}
+        keyExtractor={(item) => item.colorName}
         renderItem={({ item }) => (
           <View style={[styles.color, { backgroundColor: item.hexCode }]} />
         )}
@@ -35,9 +35,9 @@ const styles = StyleSheet.create({
   },
   color: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
     elevation: 2,
     height: 40,
     width: 40,
