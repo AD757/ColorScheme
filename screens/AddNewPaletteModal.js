@@ -81,13 +81,13 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   container: {
+     backgroundColor: '#fff',
     flex: 1,
     padding: 5,
   },
   textInput: {
     marginVertical: 8,
   },
-  colours: {},
   view: {
     flexDirection: 'row',
     justifyContent: 'space-between',
