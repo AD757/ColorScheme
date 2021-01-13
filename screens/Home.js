@@ -1,14 +1,22 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
-  StyleSheet,
+  View,
   FlatList,
+  StyleSheet,
   RefreshControl,
-  Text,
   TouchableOpacity,
+  Text,
 } from 'react-native';
 import PalettePreview from '../components/PalettePreview';
+import { COLORS, RAINBOW, FRONTEND_MASTERS } from '../components/Colors';
 
-const URL = 'https://color-palette-api.kadikraman.now.sh/palettes';
+const COLOR_PALETTES = [
+  { paletteName: 'Solarized', colors: COLORS },
+  { paletteName: 'Frontend Masters', colors: FRONTEND_MASTERS },
+  { paletteName: 'Rainbow', colors: RAINBOW },
+];
+
+const url = 'https://color-palette-api.kadikraman.now.sh/palettes';
 
 const Home = ({ navigation, route }) => {
   const newPalette = route.params ? route.params.newPalette : null;
@@ -16,15 +24,11 @@ const Home = ({ navigation, route }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleFetchPalettes = useCallback(async () => {
-    const response = await fetch(URL);
-    if (response.ok) {
-      const palettes = await response.json();
-      setPalettes(palettes);
+    const result = await fetch(url);
+    if (result.ok) {
+      const colours = await result.json();
+      setPalettes(colours);
     }
-  }, []);
-
-  useEffect(() => {
-    handleFetchPalettes();
   }, []);
 
   const handleRefresh = useCallback(async () => {
@@ -33,37 +37,45 @@ const Home = ({ navigation, route }) => {
     setTimeout(() => {
       setIsRefreshing(false);
     }, 1000);
-  });
+  }, []);
+
+  useEffect(() => {
+    handleFetchPalettes();
+  }, []);
 
   useEffect(() => {
     if (newPalette) {
-      setPalettes(current => [newPalette, ...current]);
+      setPalettes((current) => [newPalette, ...current]);
     }
   }, [newPalette]);
 
   return (
-    <>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('AddNewPalette')}
-      >
-        <Text style={styles.buttonText}>Add a color scheme</Text>
-      </TouchableOpacity>
+    (
       <FlatList
         style={styles.list}
         data={palettes}
-        keyExtractor={item => item.paletteName}
+        keyExtractor={(item) => item.paletteName}
         renderItem={({ item }) => (
           <PalettePreview
-            onPress={() => navigation.push('ColorPalette', item)}
+            onPress={() => navigation.navigate('ColorPalette', item)}
             palette={item}
           />
         )}
         refreshControl={
           <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
         }
+        ListHeaderComponent={
+          <TouchableOpacity
+            style={styles.zone}
+            onPress={() => {
+              navigation.navigate('AddNewPalette');
+            }}
+          >
+            <Text style={styles.text}>Create a color scheme</Text>
+          </TouchableOpacity>
+        }
       />
-    </>
+    )
   );
 };
 
@@ -73,16 +85,14 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'white',
   },
-  button: {
-    height: 50,
-    backgroundColor: 'white',
-    padding: 10,
-  },
-  buttonText: {
-    fontSize: 24,
+  text: {
     fontWeight: 'bold',
     color: '#007AFF',
+    fontSize: 25,
     textAlign: 'center',
+  },
+  zone: {
+    paddingVertical: 10,
   },
 });
 
